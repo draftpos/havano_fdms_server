@@ -312,6 +312,8 @@ export class FdmsSimulator {
       throw new HttpError(422, "DEV05", `CSR subject CN ${issued.commonName} is not ZIMRA-{serial}-${String(deviceId).padStart(10, "0")}`);
     }
     const device = this.devices.get(deviceId) ?? this.addDevice(deviceId, m[1]!);
+    device.serialNumber = m[1]!;
+    device.commonName = issued.commonName;
     device.certificatePem = issued.certificatePem;
     return { operationID, certificate: issued.certificatePem };
   }

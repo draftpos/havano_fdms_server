@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+import * as crypto from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -65,7 +65,7 @@ export function decryptPrivateKey(encrypted: string): string {
     throw new Error("Corrupted encrypted private key format");
   }
 
-  const [, , ivHex, tagHex, cipherHex] = parts;
+  const [, , ivHex, tagHex, cipherHex] = parts as [string, string, string, string, string];
   const masterKey = getMasterKey();
   const iv = Buffer.from(ivHex, "hex");
   const tag = Buffer.from(tagHex, "hex");
@@ -73,7 +73,7 @@ export function decryptPrivateKey(encrypted: string): string {
   const decipher = crypto.createDecipheriv("aes-256-gcm", masterKey, iv);
   decipher.setAuthTag(tag);
 
-  let decrypted = decipher.update(cipherHex, "hex", "utf-8");
+  let decrypted: string = decipher.update(cipherHex, "hex", "utf-8");
   decrypted += decipher.final("utf-8");
   return decrypted;
 }

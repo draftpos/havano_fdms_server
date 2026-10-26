@@ -108,3 +108,7 @@ Everything public is exported from `zimra-fdms`; prefer that over deep paths.
   `reconcile()`.
 - `ZIMRA_BASE_URL` and `ZIMRA_CA` point the CLI, MCP server and e2e script at
   `npx zimra-fdms-simulator`.
+
+
+
+#[text](docs/INTEGRATION_PLAN.md)
