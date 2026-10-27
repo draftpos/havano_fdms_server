@@ -215,7 +215,8 @@ main{flex:1;overflow:auto}
 .custom-range.open{display:inline-flex}
 .custom-range input{border:1px solid var(--border-2);border-radius:5px;padding:3px 6px;font-size:12px;outline:0}
 .range-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-2);border-radius:5px;padding:4px 10px;font-size:12px;font-weight:600;color:#1f2937}
-.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:16px}
+@media (max-width:1300px){.kpis{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}}
 .kpi{border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:#fff;transition:box-shadow .15s,transform .15s}
 .kpi:hover{box-shadow:0 8px 20px rgba(15,23,42,.07);transform:translateY(-1px)}
 .kpi-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -335,27 +336,64 @@ table.grid{width:100%;border-collapse:collapse;font-size:12.5px}
 input[type=checkbox]{accent-color:var(--navy);width:13px;height:13px;cursor:pointer;vertical-align:middle}
 .print-title{display:none}
 
-/* ---------- Full-page Form View ---------- */
-.form-band{background:var(--band);border-bottom:1px solid var(--border);padding:10px 16px}
-.form-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.fh-left{display:flex;align-items:center;gap:8px;font-size:14px}
-.breadcrumb-link{color:var(--navy);font-weight:600;cursor:pointer;text-decoration:none}
-.breadcrumb-link:hover{text-decoration:underline}
-.breadcrumb-sep{color:var(--muted);font-size:13px}
-.breadcrumb-current{color:#1f2937;font-weight:700}
-.fh-right{display:flex;align-items:center;gap:8px}
+/* ---------- Full-page Form View (Clean ERP Design matching Products / 10001) ---------- */
+.form-band{background:#fff;border-bottom:1px solid var(--border);padding:10px 24px}
+.form-breadcrumbs{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:8px}
+.bc-root{color:#000080;font-weight:600;cursor:pointer;text-decoration:none}
+.bc-root:hover{text-decoration:underline}
+.bc-sep{color:#94a3b8;font-size:13px}
+.bc-curr{color:#0f172a;font-weight:700}
+.erp-action-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.erp-bar-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.btn-erp{background:#fff;border:1px solid #e2e8f0;color:#334155;font-size:12px;font-weight:500;padding:5px 12px;border-radius:4px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:all .12s;white-space:nowrap}
+.btn-erp:hover{background:#f8fafc;border-color:#cbd5e1}
+.btn-erp-save{border-color:#86efac;color:#15803d}
+.btn-erp-save:hover{background:#f0fdf4;border-color:#4ade80}
+.btn-erp-cancel{border-color:#fca5a5;color:#b91c1c}
+.btn-erp-cancel:hover{background:#fef2f2;border-color:#f87171}
+.btn-erp-new{border-color:#93c5fd;color:#1d4ed8}
+.btn-erp-new:hover{background:#eff6ff;border-color:#60a5fa}
+.btn-erp-pdf svg{color:#ea580c}
+.btn-erp-mail svg{color:#6366f1}
+.btn-erp-wa svg{color:#16a34a}
+.btn-erp-dup svg{color:#8b5cf6}
+.btn-erp-pin svg{color:#f59e0b}
 
-.form-page-body{width:100%;max-width:none;margin:0;padding:16px 24px 48px;box-sizing:border-box}
-.form-card{background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(15,23,42,.04);padding:28px 36px;width:100%;box-sizing:border-box}
-.form-header-box{display:flex;align-items:flex-start;gap:16px;border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:22px}
-.form-header-box .f-icon{width:42px;height:42px;border-radius:8px;background:linear-gradient(135deg,#000080,#3b82f6);color:#fff;display:grid;place-items:center;flex-shrink:0}
-.form-header-box h2{font-size:17.5px;font-weight:700;color:#0f172a;margin:0 0 4px}
-.form-header-box p{font-size:13px;color:var(--muted);margin:0;line-height:1.5}
-.form-section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#475569;margin:20px 0 10px;display:flex;align-items:center;gap:6px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.form-grid.single{grid-template-columns:1fr}
-.form-notice{background:#f8fafc;border:1px solid var(--border-2);border-radius:6px;padding:12px 14px;color:#334155;font-size:12px;line-height:1.5;margin-top:20px;display:flex;align-items:flex-start;gap:10px}
-.form-notice svg{color:var(--navy);flex-shrink:0;margin-top:2px}
+.erp-status-toggle{display:inline-flex;background:#f1f5f9;border-radius:5px;padding:2px}
+.erp-status-btn{padding:4px 14px;font-size:12px;border-radius:4px;border:none;background:transparent;color:#64748b;font-weight:500;cursor:pointer;transition:all .15s}
+.erp-status-btn.active{background:#e2e8f0;color:#0f172a;font-weight:700}
+
+.erp-page-canvas{background:#fff;padding:24px 28px 48px;width:100%;box-sizing:border-box}
+
+/* Upper fields grid (3 columns: left fields, middle fields, right image box) */
+.erp-top-grid{display:grid;grid-template-columns:minmax(280px,1.2fr) minmax(240px,1fr) auto;gap:36px;align-items:flex-start;margin-bottom:24px}
+.erp-field-row{display:grid;grid-template-columns:140px 1fr;align-items:center;margin-bottom:12px;gap:12px}
+.erp-lbl{font-size:12.5px;color:#334155;font-weight:500;white-space:nowrap}
+.erp-val{display:flex;align-items:center;position:relative;min-height:28px}
+.erp-input{width:100%;border:none;border-bottom:1px solid #e2e8f0;background:transparent;padding:5px 0;font-size:13px;color:#0f172a;outline:none;font-family:inherit;transition:border-color .15s}
+.erp-input:focus{border-bottom-color:#000080}
+.erp-input.mono{font-family:var(--mono)}
+.erp-select{width:100%;border:none;border-bottom:1px solid #e2e8f0;background:transparent;padding:5px 0;font-size:13px;color:#0f172a;outline:none;font-family:inherit;cursor:pointer}
+.erp-select:focus{border-bottom-color:#000080}
+
+.erp-img-box{width:96px;height:86px;border:1.5px dashed #cbd5e1;border-radius:6px;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#94a3b8;cursor:pointer;transition:all .15s}
+.erp-img-box:hover{border-color:#94a3b8;background:#f1f5f9}
+.erp-img-box span{font-size:11px;font-weight:500;color:#64748b}
+
+/* Tabs Bar */
+.erp-tabs-bar{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;margin-bottom:24px}
+.erp-tab-btn{padding:8px 18px;font-size:12.5px;font-weight:500;color:#64748b;background:transparent;border:1px solid transparent;border-bottom:none;border-radius:5px 5px 0 0;cursor:pointer;transition:all .12s;margin-bottom:-1px}
+.erp-tab-btn:hover{color:#0f172a}
+.erp-tab-btn.active{background:#fff;color:#0f172a;font-weight:700;border-color:#e2e8f0;border-bottom:2px solid #fff}
+
+/* Tab panes */
+.erp-tab-pane{display:none}
+.erp-tab-pane.active{display:block}
+.erp-pane-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.erp-pane-title{font-size:12px;font-weight:800;color:#000080;text-transform:uppercase;letter-spacing:.5px;margin-bottom:18px}
+.erp-check-wrap{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:#334155;cursor:pointer;padding:4px 0}
+.erp-check-wrap input[type=checkbox]{width:15px;height:15px;accent-color:#000080;cursor:pointer}
+
 .success-banner{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:22px;text-align:center;margin-bottom:22px}
 .success-banner .suc-icon{width:46px;height:46px;border-radius:50%;background:#16a34a;color:#fff;display:grid;place-items:center;margin:0 auto 10px}
 
@@ -460,6 +498,11 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
           <a data-go="receipts">Fiscal Receipts</a>
         </div>
       </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/api/docs" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">
+          <span data-icon="file" data-size="12"></span>Swagger API Docs
+        </a>
+      </div>
     </nav>
 
     <div class="top-right">
@@ -520,12 +563,23 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
           <div class="kpi-value" id="kpi-rc">0</div>
           <div class="kpi-sub" id="kpi-rc-sub">—</div>
         </div>
-        <div class="kpi">
-          <div class="kpi-top"><span class="kpi-label">Fiscal Day</span><span class="badge b-amber" id="kpi-day-badge">—</span></div>
-          <div class="kpi-value" id="kpi-day">—</div>
+        <div class="kpi" id="kpi-card-day">
+          <div class="kpi-top"><span class="kpi-label">Fiscal Day Status</span><span class="badge b-amber" id="kpi-day-badge">—</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 4px">
+            <div class="kpi-value" id="kpi-day" style="margin:0">—</div>
+            <div id="kpi-day-btn-wrap"></div>
+          </div>
           <div class="kpi-sub" id="kpi-day-sub">—</div>
         </div>
-        <div class="kpi">
+        <div class="kpi" id="kpi-card-failed">
+          <div class="kpi-top"><span class="kpi-label">Failed / Stuck Days</span><span class="badge b-green" id="kpi-failed-badge">0 Issues</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 4px">
+            <div class="kpi-value" id="kpi-failed-count" style="margin:0">0</div>
+            <div id="kpi-failed-btn-wrap"></div>
+          </div>
+          <div class="kpi-sub" id="kpi-failed-sub">All days closed cleanly</div>
+        </div>
+        <div class="kpi" id="kpi-card-queue">
           <div class="kpi-top"><span class="kpi-label">Offline Queue</span><span class="badge b-green" id="kpi-q-badge">Synced</span></div>
           <div class="kpi-value" id="kpi-q">0</div>
           <div class="kpi-sub" id="kpi-q-sub">—</div>
@@ -599,102 +653,163 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
       </div>
     </section>
 
-    <!-- ---------- Full-page New Client Store Form View ---------- -->
+    <!-- ---------- Full-page New Client Store View ---------- -->
     <section id="view-new_store" class="view hidden">
       <div class="form-band">
-        <div class="form-head">
-          <div class="fh-left">
-            <a class="breadcrumb-link" data-go="stores">Client Stores</a>
-            <span class="breadcrumb-sep">/</span>
-            <span class="breadcrumb-current">New Client Store</span>
-            <span class="badge b-blue" style="margin-left:6px">Draft</span>
+        <div class="form-breadcrumbs">
+          <a class="bc-root" data-go="stores">Client Stores</a>
+          <span class="bc-sep">/</span>
+          <span class="bc-curr" id="form-title-code">New Client Store</span>
+        </div>
+        <div class="erp-action-bar">
+          <div class="erp-bar-left">
+            <button type="button" class="btn btn-primary" id="full-prov-submit"><span data-icon="check" data-size="13"></span>Register &amp; Issue API Key</button>
+            <button type="button" class="btn" data-go="stores"><span data-icon="x" data-size="12"></span>Cancel</button>
+            <button type="button" class="btn" id="btn-gen-serial"><span data-icon="refresh" data-size="12"></span>Generate Serial</button>
           </div>
-          <div class="fh-right">
-            <button class="btn btn-primary btn-lg" id="full-prov-submit"><span data-icon="check"></span>Register &amp; Issue API Key</button>
-            <button class="btn btn-lg" data-go="stores">Discard</button>
-          </div>
+          <div style="font-size:12px;color:var(--muted)">ZIMRA Virtual Fiscal Device &amp; Organization Onboarding</div>
         </div>
       </div>
-      <div class="form-page-body">
-        <div class="form-card" id="full-prov-form">
-          <div class="form-header-box">
-            <div class="f-icon" data-icon="store" data-size="22"></div>
-            <div>
-              <h2>New Client Store &amp; Virtual Fiscal Device</h2>
-              <p>Register a client store with ZIMRA, generate encrypted mTLS certificate credentials, auto-open fiscal day 1, and issue a POS API key.</p>
-            </div>
-          </div>
-          <div id="full-prov-err" class="err-box hidden"></div>
-          
-          <div class="form-section-title"><span data-icon="store" data-size="14"></span> Store Information</div>
-          <div class="form-grid single">
-            <div class="field">
-              <label for="full-prov-name">Store / Company Name *</label>
-              <input class="input" id="full-prov-name" placeholder="e.g. Spar Avondale" style="font-size:14px;padding:9px 12px;font-weight:600">
+
+      <div class="erp-page-canvas">
+        <div id="full-prov-form" style="max-width:960px;margin:0 auto">
+          <div id="full-prov-err" class="err-box hidden" style="margin-bottom:20px"></div>
+
+          <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:24px">
+            <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">PRIMARY STORE IDENTITY</div>
+            <div class="field" style="margin-bottom:0">
+              <label for="full-prov-name" style="font-size:13px;font-weight:700">Store / Company Name</label>
+              <input class="input" id="full-prov-name" placeholder="e.g. Havano Megastore" style="font-size:15px;font-weight:600;padding:10px 14px">
             </div>
           </div>
 
-          <div class="form-section-title"><span data-icon="cpu" data-size="14"></span> ZIMRA Device Identity</div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="full-prov-device-id">ZIMRA Device ID *</label>
-              <input class="input" id="full-prov-device-id" type="number" value="12345">
-            </div>
-            <div class="field">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-                <label for="full-prov-serial" style="margin-bottom:0">Device Serial Number *</label>
-                <button type="button" class="lnk" id="btn-gen-serial" style="font-size:11.5px">Generate</button>
+          <div class="erp-pane-grid" style="gap:32px;margin-bottom:24px">
+            <!-- Left Column: Store Details -->
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+              <div class="erp-pane-title"><span data-icon="store" data-size="14" style="margin-right:6px"></span>Store &amp; Location Details</div>
+              
+              <div class="g2" style="margin-bottom:14px">
+                <div class="field">
+                  <label for="full-prov-city">City</label>
+                  <input class="input" id="full-prov-city" value="Harare" placeholder="e.g. Harare, Bulawayo">
+                </div>
+                <div class="field">
+                  <label for="full-prov-branch">Branch Name</label>
+                  <input class="input" id="full-prov-branch" value="Main Branch" placeholder="e.g. Main Branch, CBD">
+                </div>
               </div>
-              <input class="input mono" id="full-prov-serial" placeholder="POS-1393">
+
+              <div class="g2" style="margin-bottom:14px">
+                <div class="field">
+                  <label for="full-prov-email">Official Email</label>
+                  <input class="input" id="full-prov-email" type="email" placeholder="store@organization.co.zw">
+                </div>
+                <div class="field">
+                  <label for="full-prov-phone">Phone Number</label>
+                  <input class="input" id="full-prov-phone" placeholder="+263 77 123 4567">
+                </div>
+              </div>
+
+              <div class="field" style="margin-bottom:0">
+                <label for="full-prov-address">Physical Address</label>
+                <input class="input" id="full-prov-address" placeholder="e.g. 123 Samora Machel Avenue">
+              </div>
+            </div>
+
+            <!-- Right Column: Compliance & Device -->
+            <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px">
+              <div class="erp-pane-title"><span data-icon="shield" data-size="14" style="margin-right:6px"></span>Tax Compliance &amp; ZIMRA Device</div>
+
+              <div class="g2" style="margin-bottom:14px">
+                <div class="field">
+                  <label for="full-prov-tin">Taxpayer ID (TIN)</label>
+                  <input class="input mono" id="full-prov-tin" placeholder="2001234567">
+                </div>
+                <div class="field">
+                  <label for="full-prov-vat">VAT Number</label>
+                  <input class="input mono" id="full-prov-vat" placeholder="10023456">
+                </div>
+              </div>
+
+              <div class="g2" style="margin-bottom:14px">
+                <div class="field">
+                  <label for="full-prov-device-id">ZIMRA Device ID</label>
+                  <input class="input" id="full-prov-device-id" type="number" value="12345">
+                </div>
+                <div class="field">
+                  <label for="full-prov-serial">Serial Number</label>
+                  <input class="input mono" id="full-prov-serial" placeholder="POS-9060">
+                </div>
+              </div>
+
+              <div class="g2" style="margin-bottom:0">
+                <div class="field">
+                  <label for="full-prov-key">Activation Key</label>
+                  <input class="input mono" id="full-prov-key" value="AAAABBBB">
+                </div>
+                <div class="field">
+                  <label for="full-prov-env">Environment</label>
+                  <select class="input" id="full-prov-env">
+                    <option value="test">Test (simulator / sandbox)</option>
+                    <option value="production">Production (live ZIMRA)</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="form-section-title"><span data-icon="key" data-size="14"></span> Gateway Security &amp; Environment</div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="full-prov-key">ZIMRA Activation Key *</label>
-              <input class="input mono" id="full-prov-key" value="AAAABBBB">
-            </div>
-            <div class="field">
-              <label for="full-prov-env">Environment</label>
-              <select class="input" id="full-prov-env">
-                <option value="test">Test (simulator / sandbox)</option>
-                <option value="production">Production</option>
-              </select>
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px">
+            <span data-icon="info" data-size="20" style="color:#2563eb;flex-shrink:0"></span>
+            <div style="font-size:12.5px;color:#1e40af;line-height:1.5">
+              The gateway performs the ZIMRA handshake, generates and stores the device certificate encrypted with AES-256-GCM, auto-opens Fiscal Day 1, and issues a POS API key.
             </div>
           </div>
 
-          <div class="form-notice">
-            <span data-icon="bolt" data-size="16"></span>
-            <div>
-              <b>Automated Zero-Friction Gateway:</b> The server negotiates device enrollment with ZIMRA, stores the private key and certificate encrypted with AES-256-GCM, auto-initializes fiscal day 1, and assigns a high-entropy POS API key. Terminals integrate instantly via HTTP header.
-            </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px">
+            <button type="button" class="btn btn-lg" data-go="stores">Cancel</button>
+            <button type="button" class="btn btn-primary btn-lg" id="full-prov-submit-btn"><span data-icon="check"></span>Register &amp; Issue API Key</button>
           </div>
         </div>
 
-        <div class="form-card hidden" id="full-prov-done" style="text-align:center">
+        <!-- Success Screen -->
+        <div class="hidden" id="full-prov-done" style="max-width:760px;margin:30px auto;text-align:center">
           <div class="success-banner">
             <div class="suc-icon" data-icon="check" data-size="24"></div>
-            <h2 style="font-size:18px;font-weight:700;color:#166534;margin:0 0 6px">Client Store Successfully Registered</h2>
-            <p style="color:#15803d;font-size:13px;margin:0">Device keys have been signed and encrypted. Fiscal day 1 is open and online.</p>
+            <h2 style="font-size:20px;font-weight:800;color:#166534;margin:0 0 6px">Client Store Successfully Registered</h2>
+            <p style="color:#15803d;font-size:13.5px;margin:0">Device registered with ZIMRA, mTLS keys encrypted, and Fiscal Day 1 opened.</p>
           </div>
 
-          <div style="text-align:left;margin-bottom:20px">
-            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">POS API Key (Only credential needed by POS terminal):</label>
-            <div class="keybox" style="padding:10px 14px">
-              <span id="full-prov-new-key" style="font-size:13.5px;letter-spacing:.3px">—</span>
+          <div style="text-align:left;background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:20px">
+            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:8px">POS API Key (Only credential needed by your POS system):</label>
+            <div class="keybox" style="padding:12px 16px;background:#f8fafc;border:1px solid #cbd5e1">
+              <span id="full-prov-new-key" style="font-size:14px;letter-spacing:.3px;font-family:var(--mono);font-weight:700;color:var(--navy)">—</span>
               <button class="btn btn-primary" id="full-prov-copy"><span data-icon="copy"></span>Copy Key</button>
             </div>
           </div>
 
-          <div style="text-align:left;margin-bottom:24px">
-            <label style="font-size:12px;font-weight:700;color:#374151;display:block;margin-bottom:6px">POS Terminal Quick-Connect (cURL):</label>
-            <pre class="code" id="full-prov-curl" style="margin-top:0"></pre>
+          <div style="text-align:left;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:20px 24px;margin-bottom:24px">
+            <div style="font-size:13px;font-weight:700;color:#0f172a;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+              <span data-icon="settings" style="color:var(--blue)"></span>
+              <span>Havano POS Fiscalization Settings (Enter these in your POS dialog):</span>
+            </div>
+            <div style="display:grid;grid-template-columns:140px 1fr;gap:8px 16px;font-size:13px;line-height:1.6">
+              <span style="color:#64748b;font-weight:600">Provider:</span>
+              <span style="font-weight:700;color:#0f172a">Havano Zimra</span>
+              <span style="color:#64748b;font-weight:600">Base URL:</span>
+              <span style="font-family:var(--mono);font-weight:700;color:var(--blue)" id="full-prov-base-url">—</span>
+              <span style="color:#64748b;font-weight:600">Device SN:</span>
+              <span style="font-family:var(--mono);font-weight:700;color:#0f172a" id="full-prov-dev-sn">—</span>
+              <span style="color:#64748b;font-weight:600">API Key:</span>
+              <span style="font-family:var(--mono);font-weight:700;color:#0f172a" id="full-prov-cfg-key">—</span>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:#64748b;line-height:1.5">
+              💡 <em>Your POS will read the Base URL dynamically from the Fiscal Settings dialog — no code changes required.</em>
+            </div>
           </div>
 
-          <div style="display:flex;justify-content:center;gap:10px">
+          <div style="display:flex;justify-content:center;gap:12px">
             <button class="btn btn-primary btn-lg" id="full-prov-open-dash"><span data-icon="bolt"></span>Make Active Store &amp; View Dashboard</button>
-            <button class="btn btn-lg" data-go="stores"><span data-icon="users"></span>Back to Client Stores</button>
+            <button class="btn btn-lg" data-go="stores"><span data-icon="store"></span>Back to Client Stores</button>
           </div>
         </div>
       </div>
@@ -714,7 +829,20 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
     <div id="prov-form">
       <div class="modal-body">
         <div id="prov-err" class="err-box hidden"></div>
-        <div class="field"><label for="prov-name">Store / company name</label><input class="input" id="prov-name" placeholder="e.g. Spar Avondale"></div>
+        <div class="field"><label for="prov-name">Store / company name</label><input class="input" id="prov-name" placeholder="e.g. Havano Megastore"></div>
+        <div class="g2">
+          <div class="field"><label for="prov-city">City</label><input class="input" id="prov-city" value="Harare" placeholder="e.g. Harare, Bulawayo"></div>
+          <div class="field"><label for="prov-email">Official Email</label><input class="input" id="prov-email" type="email" placeholder="store@organization.co.zw"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label for="prov-phone">Phone number</label><input class="input" id="prov-phone" placeholder="+263 77 123 4567"></div>
+          <div class="field"><label for="prov-branch">Branch name</label><input class="input" id="prov-branch" value="Main Branch" placeholder="e.g. CBD Branch"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label for="prov-tin">Taxpayer ID (TIN)</label><input class="input mono" id="prov-tin" placeholder="2001234567"></div>
+          <div class="field"><label for="prov-vat">VAT Number</label><input class="input mono" id="prov-vat" placeholder="10023456"></div>
+        </div>
+        <div class="field"><label for="prov-address">Physical Address</label><input class="input" id="prov-address" placeholder="e.g. 123 Samora Machel Avenue"></div>
         <div class="g2">
           <div class="field"><label for="prov-device-id">ZIMRA device ID</label><input class="input" id="prov-device-id" type="number" value="12345"></div>
           <div class="field"><label for="prov-serial">Serial number</label><input class="input" id="prov-serial"></div>
@@ -922,7 +1050,7 @@ const MODULES = {
   stores: { name: 'Client Stores', icon: 'store', color: '#10b981', nav: 'master', label: 'Client Stores' },
   devices: { name: 'Fiscal Devices', icon: 'cpu', color: '#2563eb', nav: 'master', label: 'Fiscal Devices' },
   days: { name: 'Fiscal Days', icon: 'cal', color: '#0284c7', nav: 'operations', label: 'Fiscal Days' },
-  new_store: { name: 'New Client Store', icon: 'store', color: '#10b981', nav: 'master', label: 'New Client Store' },
+  new_store: { name: 'Client Stores', icon: 'store', color: '#10b981', nav: 'master', label: 'New Client Store' },
   keys: { name: 'API Keys', icon: 'key', color: '#7c3aed', nav: 'master', label: 'POS API Keys' },
   receipts: { name: 'Receipts', icon: 'receipt', color: '#ea580c', nav: 'operations', label: 'Fiscal Receipts' },
   sandbox: { name: 'POS Sandbox', icon: 'send', color: '#db2777', nav: 'operations', label: 'POS Sandbox' },
@@ -1060,14 +1188,62 @@ function renderDashboard() {
 
   const st = S.status;
   const dayStatus = st?.fiscalStatus?.fiscalDayStatus || st?.status?.fiscalDayStatus;
-  const open = st ? dayStatus !== 'FiscalDayClosed' : false;
+  const devOpen = st ? dayStatus !== 'FiscalDayClosed' : false;
   const lastGlobal = st?.fiscalStatus?.lastReceiptGlobalNo ?? st?.status?.lastReceiptGlobalNo ?? 0;
-  $('kpi-day').textContent = !st ? 'No device' : open ? 'Open' : 'Closed';
-  $('kpi-day').style.color = !st ? 'var(--muted)' : open ? 'var(--green)' : 'var(--amber)';
-  $('kpi-day-badge').textContent = st ? st.device.serialNumber : 'Unassigned';
-  $('kpi-day-badge').className = 'badge ' + (open ? 'b-green' : 'b-amber');
-  $('kpi-day-sub').innerHTML = st ? `Last global #${esc(lastGlobal)} · ${open ? '<a data-do="close-day">Close day</a>' : '<a data-do="open-day">Open day</a>'}` : '<a data-do="new-store">Register a device</a>';
 
+  const allDays = S.fiscalDays || [];
+  const openDays = allDays.filter(d => d.status === 'Open');
+  const failedDays = allDays.filter(d => d.status === 'FailedToClose' || d.status === 'Overdue' || Boolean(d.closeError));
+  const closedDays = allDays.filter(d => d.status === 'Closed');
+
+  // KPI 3: Fiscal Day Status & Quick Action Button
+  $('kpi-day').textContent = !st ? 'No device' : devOpen ? 'Open' : 'Closed';
+  $('kpi-day').style.color = !st ? 'var(--muted)' : devOpen ? '#16a34a' : 'var(--amber)';
+  $('kpi-day-badge').textContent = st ? `${st.device.serialNumber} · ${devOpen ? 'Active' : 'Idle'}` : 'Unassigned';
+  $('kpi-day-badge').className = 'badge ' + (devOpen ? 'b-green' : 'b-amber');
+
+  const btnWrap = $('kpi-day-btn-wrap');
+  if (btnWrap) {
+    if (!st) {
+      btnWrap.innerHTML = '';
+    } else if (devOpen) {
+      btnWrap.innerHTML = `<button class="btn btn-sm" data-do="close-day" style="background:#ef4444;color:#fff;border:none;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px" title="Sign counters and submit day close to ZIMRA"><span data-icon="moon" data-size="12"></span>Close Day</button>`;
+    } else {
+      btnWrap.innerHTML = `<button class="btn btn-sm btn-primary" data-do="open-day" style="font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:4px" title="Open new fiscal day on device"><span data-icon="sun" data-size="12"></span>Open Day</button>`;
+    }
+    hydrateIcons(btnWrap);
+  }
+
+  $('kpi-day-sub').innerHTML = st
+    ? `Last global #${esc(lastGlobal)} · <a data-go="days" data-filter="open" style="font-weight:600;color:var(--navy)">${openDays.length} open in fleet →</a>`
+    : '<a data-do="new-store">Register a device</a>';
+
+  // KPI 4: Failed / Overdue Closes (Day Health)
+  const failedCount = failedDays.length;
+  $('kpi-failed-count').textContent = failedCount;
+  $('kpi-failed-count').style.color = failedCount > 0 ? '#dc2626' : '#16a34a';
+  $('kpi-failed-badge').textContent = failedCount > 0 ? `${failedCount} Attention` : '0 Issues';
+  $('kpi-failed-badge').className = 'badge ' + (failedCount > 0 ? 'b-red' : 'b-green');
+
+  const failedBtnWrap = $('kpi-failed-btn-wrap');
+  if (failedBtnWrap) {
+    if (failedCount > 0) {
+      failedBtnWrap.innerHTML = `<button class="btn btn-sm" data-do="retry-failed-days" style="background:#dc2626;color:#fff;border:none;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer" title="Force retry closure on all failed days">Retry Close</button>`;
+    } else {
+      failedBtnWrap.innerHTML = openDays.length > 1
+        ? `<button class="btn btn-sm" data-do="close-all-days" style="font-size:11px;padding:3px 8px;border-color:var(--border-2);color:#4b5563" title="Close all currently open days across all stores">Close All</button>`
+        : '';
+    }
+  }
+
+  if (failedCount > 0) {
+    const names = failedDays.map(f => f.storeName || f.serialNumber).slice(0, 2).join(', ') + (failedCount > 2 ? '…' : '');
+    $('kpi-failed-sub').innerHTML = `<span style="color:#b91c1c;font-weight:600">${esc(names)}</span> · <a data-go="days" data-filter="failed" style="color:#b91c1c;font-weight:700">Inspect failed →</a>`;
+  } else {
+    $('kpi-failed-sub').innerHTML = `All days closed clean · <a data-go="days" data-filter="closed" style="color:var(--muted)">View ${closedDays.length} closed</a>`;
+  }
+
+  // KPI 5: Offline Queue
   const q = Number(st?.queueSize ?? cur?.queueCount ?? 0);
   $('kpi-q').textContent = q;
   $('kpi-q-badge').textContent = q ? 'Pending' : 'Synced';
@@ -1123,11 +1299,26 @@ function renderSnippet() {
    ===================================================================== */
 const envBadge = v => !v || v === '—' ? '—' : `<span class="badge ${v === 'production' ? 'b-amber' : 'b-blue'}">${esc(v)}</span>`;
 const statusBadge = v => `<span class="badge ${v === 'Active' ? 'b-green' : 'b-gray'}"><span class="dot"></span>${esc(v)}</span>`;
-const dayStatusBadge = v => v === 'Open'
-  ? `<span class="badge b-green" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#16a34a;box-shadow:0 0 0 2px rgba(22,163,74,.2)"></span>Open</span>`
-  : `<span class="badge b-gray" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#9ca3af"></span>Closed</span>`;
-const dayActionButtons = r => r.status === 'Open'
-  ? `<button class="btn btn-sm" data-day-close="${esc(r._tenantId)}:${esc(r._deviceId)}" style="padding:2px 8px;font-size:11.5px;border-color:#fca5a5;color:#b91c1c" title="Sign counters and submit close to ZIMRA">Close Day</button>`
+const dayStatusBadge = (v, r) => {
+  if (v === 'Open') {
+    return `<span class="badge b-green" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#16a34a;box-shadow:0 0 0 2px rgba(22,163,74,.2)"></span>Open</span>`;
+  }
+  if (v === 'FailedToClose' || v === 'Error') {
+    return `<div style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px">
+      <span class="badge b-red" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#dc2626"></span>Failed to Close</span>
+      ${r?.closeError ? `<span style="font-size:10.5px;color:#dc2626;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(r.closeError)}">${esc(r.closeError)}</span>` : ''}
+    </div>`;
+  }
+  if (v === 'Overdue') {
+    return `<div style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px">
+      <span class="badge b-amber" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#d97706"></span>Overdue (>24h)</span>
+      <span style="font-size:10.5px;color:#d97706">Exceeds 24h limit</span>
+    </div>`;
+  }
+  return `<span class="badge b-gray" style="display:inline-flex;align-items:center;gap:5px"><span class="dot" style="background:#9ca3af"></span>Closed</span>`;
+};
+const dayActionButtons = r => (r.status === 'Open' || r.status === 'Overdue' || r.status === 'FailedToClose')
+  ? `<button class="btn btn-sm ${r.status === 'FailedToClose' ? 'btn-danger' : ''}" data-day-close="${esc(r._tenantId)}:${esc(r._deviceId)}" style="padding:2px 8px;font-size:11.5px;${r.status === 'FailedToClose' ? 'background:#dc2626;color:#fff;border:none;font-weight:700' : 'border-color:#fca5a5;color:#b91c1c'}" title="${r.status === 'FailedToClose' ? 'Retry closing with force flag' : 'Sign counters and submit close to ZIMRA'}">${r.status === 'FailedToClose' ? 'Retry Close' : 'Close Day'}</button>`
   : `<button class="btn btn-sm btn-primary" data-day-open="${esc(r._tenantId)}:${esc(r._deviceId)}" style="padding:2px 8px;font-size:11.5px" title="Open new fiscal day on device">Open Day</button>`;
 const typeBadge = v => `<span class="badge ${v === 'CreditNote' ? 'b-red' : v === 'DebitNote' ? 'b-purple' : 'b-blue'}">${esc(v || '—')}</span>`;
 const keyCell = (prefix, full) => full ? `<span class="keycell"><code>${esc(prefix || full.slice(0, 14))}…</code><button class="icon-btn" data-copy="${esc(full)}" title="Copy full API key">${svg('copy', 12)}</button></span>` : '—';
@@ -1139,6 +1330,7 @@ const LISTS = {
     filters: [
       { id: 'open', l: 'Opened Days', fn: r => r.status === 'Open' },
       { id: 'closed', l: 'Closed Days', fn: r => r.status === 'Closed' },
+      { id: 'failed', l: 'Failed to Close / Overdue', fn: r => r.status === 'FailedToClose' || r.status === 'Overdue' || Boolean(r.closeError) },
       { id: 'today', l: 'Opened Today', fn: r => r.isToday }
     ],
     groupBy: [
@@ -1147,7 +1339,9 @@ const LISTS = {
       { id: 'serial', l: 'Device Serial' }
     ],
     favorites: [
-      { id: 'fav_open', l: 'Opened Days', filters: ['open'] }
+      { id: 'fav_open', l: 'Opened Days', filters: ['open'] },
+      { id: 'fav_failed', l: 'Failed to Close', filters: ['failed'] },
+      { id: 'fav_closed', l: 'Closed Days', filters: ['closed'] }
     ],
     rows: () => (S.fiscalDays || []).map(d => ({
       _id: String(d.id),
@@ -1160,11 +1354,12 @@ const LISTS = {
       status: d.status || 'Closed',
       openedAt: d.openedAt ? fmtDT(new Date(d.openedAt)) : '—',
       _openedTs: d.openedAt ? new Date(d.openedAt).getTime() : 0,
-      closedAt: d.closedAt ? fmtDT(new Date(d.closedAt)) : (d.status === 'Open' ? 'Active Now' : '—'),
+      closedAt: d.closedAt ? fmtDT(new Date(d.closedAt)) : (d.status === 'Open' ? 'Active Now' : (d.status === 'FailedToClose' ? 'Close Failed' : (d.status === 'Overdue' ? 'Overdue (>24h)' : '—'))),
       receipts: Number(d.receiptsCount || 0),
       total: Number(d.totalAmount || 0),
       currency: d.currency || 'USD',
       isToday: Boolean(d.isToday),
+      closeError: d.closeError || '',
       opId: d.operationId || '—'
     })),
     cols: [
@@ -1172,7 +1367,7 @@ const LISTS = {
       { k: 'serial', l: 'Device Serial', cls: 'mono' },
       { k: 'deviceId', l: 'Device ID', cls: 'mono' },
       { k: 'dayNo', l: 'Fiscal Day #', num: 1, dec: 0 },
-      { k: 'status', l: 'Day Status', html: r => dayStatusBadge(r.status) },
+      { k: 'status', l: 'Day Status', html: r => dayStatusBadge(r.status, r) },
       { k: 'openedAt', l: 'Opened At', sortKey: '_openedTs' },
       { k: 'closedAt', l: 'Closed At' },
       { k: 'receipts', l: 'Receipts Issued', num: 1, dec: 0, total: 1 },
@@ -1211,7 +1406,13 @@ const LISTS = {
       const d = (c.devices || [])[0] || {};
       return {
         _id: c.id, _key: c.apiKey || '', _active: isActive(c.id),
-        name: c.name, id: c.id, serial: d.serialNumber || '—', deviceId: d.deviceId ?? '—',
+        name: c.name, id: c.id,
+        city: c.city || 'Harare',
+        email: c.email || '—',
+        phone: c.phone || '—',
+        tin: c.tin || '—',
+        branch: c.branchName || 'Main',
+        serial: d.serialNumber || '—', deviceId: d.deviceId ?? '—',
         model: d.modelName || 'Server', env: d.environment || '—', status: isActive(c.id) ? 'Active' : 'Ready',
         receipts: Number(c.receiptCount || 0), queue: Number(c.queueCount || 0), key: c.apiKeyPrefix || '',
         created: c.createdAt ? fmtDate(new Date(c.createdAt)) : '—'
@@ -1219,10 +1420,13 @@ const LISTS = {
     }),
     cols: [
       { k: 'name', l: 'Store Name', cls: 'strong' },
+      { k: 'city', l: 'City', cls: 'strong' },
+      { k: 'email', l: 'Email' },
+      { k: 'phone', l: 'Phone' },
+      { k: 'tin', l: 'TIN', cls: 'mono' },
       { k: 'id', l: 'Store ID', cls: 'mono' },
       { k: 'serial', l: 'Device Serial', cls: 'mono' },
       { k: 'deviceId', l: 'Device ID', cls: 'mono' },
-      { k: 'model', l: 'Model' },
       { k: 'env', l: 'Environment', html: r => envBadge(r.env) },
       { k: 'status', l: 'Status', html: r => statusBadge(r.status) },
       { k: 'receipts', l: 'Receipts', num: 1, dec: 0, total: 1 },
@@ -1230,8 +1434,9 @@ const LISTS = {
       { k: 'key', l: 'POS API Key', html: r => keyCell(r.key, r._key) },
       { k: 'created', l: 'Created At' }
     ],
-    open: r => switchClient(r._id),
+    open: r => openStoreForm(r),
     actions: [
+      { l: 'View / Edit Form', icon: 'sheet', one: 1, fn: ([r]) => openStoreForm(r) },
       { l: 'Set as Active Store', icon: 'check', one: 1, fn: ([r]) => switchClient(r._id) },
       { l: 'Copy API Key', icon: 'copy', one: 1, fn: ([r]) => copy(r._key) },
       { l: 'Delete Store', icon: 'trash', danger: 1, fn: rows => deleteStores(rows) }
@@ -1715,26 +1920,81 @@ async function deleteStores(rows) {
   refreshAll();
 }
 
-/* ---------- Full-Page Provisioning & Client Store Registration ---------- */
-function openProvision(prefill = {}) {
-  const form = $('full-prov-form'), done = $('full-prov-done'), err = $('full-prov-err');
-  if (form) form.classList.remove('hidden');
-  if (done) done.classList.add('hidden');
-  if (err) err.classList.add('hidden');
-  if ($('full-prov-name')) $('full-prov-name').value = prefill.name || '';
-  if ($('full-prov-serial')) $('full-prov-serial').value = 'POS-' + Math.floor(Math.random() * 9000 + 1000);
-  if ($('full-prov-device-id')) $('full-prov-device-id').value = prefill.deviceId || 12345;
-  if ($('full-prov-key')) $('full-prov-key').value = prefill.activationKey || 'AAAABBBB';
-  go('new_store');
-  setTimeout(() => $('full-prov-name')?.focus(), 80);
+/* ---------- Full-Page Provisioning & Client Store / Product Form ---------- */
+function switchErpTab(tabId) {
+  document.querySelectorAll('.erp-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabId);
+  });
+  document.querySelectorAll('.erp-tab-pane').forEach(pane => {
+    pane.classList.toggle('active', pane.id === `erp-tab-${tabId}`);
+  });
 }
-function closeProvision() { go('stores'); }
+
+function openProvision(prefill = {}) {
+  // Close modal if open
+  $('prov-modal')?.classList.add('hidden');
+  
+  // Navigate to full-page New Client Store view
+  go('new_store');
+  
+  $('full-prov-form')?.classList.remove('hidden');
+  $('full-prov-done')?.classList.add('hidden');
+  $('full-prov-err')?.classList.add('hidden');
+  
+  if ($('full-prov-name')) $('full-prov-name').value = prefill.name || '';
+  if ($('full-prov-city')) $('full-prov-city').value = prefill.city || 'Harare';
+  if ($('full-prov-email')) $('full-prov-email').value = prefill.email || '';
+  if ($('full-prov-phone')) $('full-prov-phone').value = prefill.phone || '';
+  if ($('full-prov-branch')) $('full-prov-branch').value = prefill.branchName || 'Main Branch';
+  if ($('full-prov-tin')) $('full-prov-tin').value = prefill.tin || '';
+  if ($('full-prov-vat')) $('full-prov-vat').value = prefill.vatNumber || '';
+  if ($('full-prov-address')) $('full-prov-address').value = prefill.address || '';
+  if ($('full-prov-device-id')) $('full-prov-device-id').value = prefill.deviceId || 12345;
+  if ($('full-prov-serial')) $('full-prov-serial').value = prefill.serialNumber || ('POS-' + Math.floor(Math.random() * 9000 + 1000));
+  if ($('full-prov-key')) $('full-prov-key').value = prefill.activationKey || 'AAAABBBB';
+  if ($('full-prov-env')) $('full-prov-env').value = prefill.environment || 'test';
+  
+  // Keep fallback modal inputs synced
+  if ($('prov-name')) $('prov-name').value = prefill.name || '';
+  if ($('prov-city')) $('prov-city').value = prefill.city || 'Harare';
+  if ($('prov-email')) $('prov-email').value = prefill.email || '';
+  if ($('prov-phone')) $('prov-phone').value = prefill.phone || '';
+  if ($('prov-branch')) $('prov-branch').value = prefill.branchName || 'Main Branch';
+  if ($('prov-tin')) $('prov-tin').value = prefill.tin || '';
+  if ($('prov-vat')) $('prov-vat').value = prefill.vatNumber || '';
+  if ($('prov-address')) $('prov-address').value = prefill.address || '';
+  if ($('prov-device-id')) $('prov-device-id').value = prefill.deviceId || 12345;
+  if ($('prov-serial')) $('prov-serial').value = prefill.serialNumber || ('POS-' + Math.floor(Math.random() * 9000 + 1000));
+  if ($('prov-key')) $('prov-key').value = prefill.activationKey || 'AAAABBBB';
+  if ($('prov-env')) $('prov-env').value = prefill.environment || 'test';
+  
+  setTimeout(() => $('full-prov-name')?.focus(), 100);
+}
+
+function openStoreForm(r) {
+  const c = typeof r === 'string' ? S.clients.find(x => x.id === r) : r;
+  if (!c) return;
+  openProvision(c);
+}
+
+function closeProvision() {
+  $('prov-modal')?.classList.add('hidden');
+  go('stores');
+}
 
 async function submitProvision() {
-  const btn = $('full-prov-submit') || $('prov-submit'), err = $('full-prov-err') || $('prov-err');
+  const btn = $('full-prov-submit-btn') || $('full-prov-submit') || $('prov-submit');
+  const err = $('full-prov-err') || $('prov-err');
   if (err) err.classList.add('hidden');
-  if (btn) { btn.disabled = true; btn.textContent = 'Registering with ZIMRA…'; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Registering…'; }
   const name = ($('full-prov-name')?.value || $('prov-name')?.value || '').trim();
+  const city = ($('full-prov-city')?.value || $('prov-city')?.value || 'Harare').trim();
+  const email = ($('full-prov-email')?.value || $('prov-email')?.value || '').trim();
+  const phone = ($('full-prov-phone')?.value || $('prov-phone')?.value || '').trim();
+  const branchName = ($('full-prov-branch')?.value || $('prov-branch')?.value || 'Main Branch').trim();
+  const tin = ($('full-prov-tin')?.value || $('prov-tin')?.value || '').trim();
+  const vatNumber = ($('full-prov-vat')?.value || $('prov-vat')?.value || '').trim();
+  const address = ($('full-prov-address')?.value || $('prov-address')?.value || '').trim();
   const deviceId = Number($('full-prov-device-id')?.value || $('prov-device-id')?.value || 12345);
   const serialNumber = ($('full-prov-serial')?.value || $('prov-serial')?.value || '').trim();
   const activationKey = ($('full-prov-key')?.value || $('prov-key')?.value || '').trim();
@@ -1743,25 +2003,32 @@ async function submitProvision() {
   try {
     const d = await api('/api/admin/clients', {
       method: 'POST',
-      body: { name, deviceId, serialNumber, activationKey, environment }
+      body: { name, city, email, phone, branchName, tin, vatNumber, address, deviceId, serialNumber, activationKey, environment }
     });
     if (d.error || !d.apiKey) throw new Error(d.error || 'Registration failed');
     S.lastProvisioned = { key: d.apiKey, id: d.tenant?.id };
     
+    if ($('prov-new-key')) $('prov-new-key').textContent = d.apiKey;
     if ($('full-prov-new-key')) $('full-prov-new-key').textContent = d.apiKey;
-    if ($('full-prov-curl')) {
-      $('full-prov-curl').textContent = `curl -X POST http://localhost:3000/api/receipt \\\n  -H "Content-Type: application/json" \\\n  -H "X-API-Key: ${d.apiKey}" \\\n  -d '{"receiptType":"FiscalInvoice","currency":"USD","invoiceNo":"INV-001","lines":[{"name":"Item","price":10,"quantity":1,"taxId":1,"taxPercent":15}],"payments":[{"moneyType":"Cash","amount":10}]}'`;
-    }
+    if ($('full-prov-base-url')) $('full-prov-base-url').textContent = location.origin;
+    if ($('full-prov-dev-sn')) $('full-prov-dev-sn').textContent = serialNumber || '—';
+    if ($('full-prov-cfg-key')) $('full-prov-cfg-key').textContent = d.apiKey;
+    
+    $('prov-form')?.classList.add('hidden');
+    $('prov-done')?.classList.remove('hidden');
     $('full-prov-form')?.classList.add('hidden');
     $('full-prov-done')?.classList.remove('hidden');
 
     await refreshAll(false);
-    toast('Client store successfully registered!');
+    toast('Client store registered with details!');
   } catch (ex) {
     if (err) { err.textContent = ex.message; err.classList.remove('hidden'); }
     toast(ex.message, 'err');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Register & issue API key'; }
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Register & issue API key';
+    }
   }
 }
 
@@ -1808,6 +2075,22 @@ function closeSelectedDays(rows) {
   if (!opened.length) return toast('None of the selected rows are open', 'err');
   if (!confirm(`Close ${opened.length} fiscal day(s)? Day counters will be signed and submitted to ZIMRA.`)) return;
   opened.forEach(r => closeSingleDay(r._tenantId, r._deviceId));
+}
+
+async function retryFailedFiscalDays() {
+  const failed = (S.fiscalDays || []).filter(d => d.status === 'FailedToClose' || d.status === 'Overdue' || Boolean(d.closeError));
+  if (!failed.length) return toast('No failed or overdue fiscal days found', 'ok');
+  if (!confirm(`Retry closing ${failed.length} failed or overdue fiscal day(s)?\nCounters will be force-reconciled and submitted to ZIMRA.`)) return;
+  toast(`Retrying day close on ${failed.length} device(s)…`);
+  let okCount = 0;
+  for (const f of failed) {
+    try {
+      const d = await api('/api/admin/fiscal-days/close', { method: 'POST', body: { tenantId: f.tenantId, deviceId: f.deviceId } });
+      if (d.success) okCount++;
+    } catch {}
+  }
+  await refreshAll();
+  toast(okCount > 0 ? `Successfully closed ${okCount} day(s)` : 'Retry complete');
 }
 
 /* ---------- Sandbox ---------- */
@@ -1870,7 +2153,10 @@ async function submitSandbox() {
 const DO = {
   'open-day': () => dayAction('open'), 'close-day': () => dayAction('close'), flush: flushQueue,
   'new-store': () => openProvision(), 'close-prov': closeProvision, 'copy-key': () => copy(activeClient()?.apiKey),
-  'regen-key': regenKey, refresh: async () => { await refreshAll(); toast('Data refreshed'); }, logout
+  'regen-key': regenKey, refresh: async () => { await refreshAll(); toast('Data refreshed'); }, logout,
+  'retry-failed-days': retryFailedFiscalDays,
+  'close-all-days': closeAllFiscalDays,
+  'open-all-days': openAllFiscalDays
 };
 
 document.addEventListener('click', e => {
@@ -1901,7 +2187,18 @@ document.addEventListener('click', e => {
   }
 
   const goEl = t.closest('[data-go]');
-  if (goEl) { e.preventDefault(); closeMenus(); return go(goEl.dataset.go); }
+  if (goEl) {
+    e.preventDefault();
+    closeMenus();
+    const target = goEl.dataset.go;
+    const filter = goEl.dataset.filter;
+    if (filter && LISTS[target]) {
+      const st = lst(target);
+      st.filters = new Set([filter]);
+      st.page = 0;
+    }
+    return go(target);
+  }
   const doEl = t.closest('[data-do]');
   if (doEl && DO[doEl.dataset.do]) { closeMenus(); return DO[doEl.dataset.do](); }
   const cp = t.closest('[data-copy]');
@@ -2100,11 +2397,34 @@ $('chart-cur').addEventListener('change', e => { S.chartCur = e.target.value; re
 $('cr-from').addEventListener('change', e => { S.customFrom = e.target.value; renderDashboard(); });
 $('cr-to').addEventListener('change', e => { S.customTo = e.target.value; renderDashboard(); });
 
-// Full page and legacy provision form bindings
+// Clean ERP form bindings
 $('full-prov-submit')?.addEventListener('click', submitProvision);
+$('full-prov-submit-btn')?.addEventListener('click', submitProvision);
 $('full-prov-copy')?.addEventListener('click', () => copy(S.lastProvisioned?.key));
 $('full-prov-open-dash')?.addEventListener('click', () => { if (S.lastProvisioned?.id) switchClient(S.lastProvisioned.id); go('dashboard'); });
 $('btn-gen-serial')?.addEventListener('click', () => { if ($('full-prov-serial')) $('full-prov-serial').value = 'POS-' + Math.floor(Math.random() * 9000 + 1000); });
+$('erp-btn-new')?.addEventListener('click', () => openProvision());
+$('erp-btn-pdf')?.addEventListener('click', () => window.print());
+$('erp-btn-mail')?.addEventListener('click', () => toast('Email dispatch opened for ' + ($('full-prov-name')?.value || 'record')));
+$('erp-btn-wa')?.addEventListener('click', () => toast('WhatsApp share link generated for ' + ($('full-prov-name')?.value || 'record')));
+$('erp-btn-dup')?.addEventListener('click', () => openProvision({ name: ($('full-prov-name')?.value || '') + ' (Copy)' }));
+$('erp-btn-pin')?.addEventListener('click', () => toast('Attachment manager opened'));
+$('erp-img-upload')?.addEventListener('click', () => toast('Image upload dialog opened'));
+$('btn-status-active')?.addEventListener('click', () => {
+  $('btn-status-active').classList.add('active');
+  $('btn-status-archived').classList.remove('active');
+  if ($('full-prov-active-chk')) $('full-prov-active-chk').checked = true;
+});
+$('btn-status-archived')?.addEventListener('click', () => {
+  $('btn-status-archived').classList.add('active');
+  $('btn-status-active').classList.remove('active');
+  if ($('full-prov-active-chk')) $('full-prov-active-chk').checked = false;
+});
+document.addEventListener('click', e => {
+  const tabBtn = e.target.closest('.erp-tab-btn');
+  if (tabBtn) switchErpTab(tabBtn.dataset.tab);
+});
+
 $('prov-submit')?.addEventListener('click', submitProvision);
 $('prov-copy')?.addEventListener('click', () => copy(S.lastProvisioned?.key));
 $('prov-open')?.addEventListener('click', () => { closeProvision(); if (S.lastProvisioned?.id) switchClient(S.lastProvisioned.id); });

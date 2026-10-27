@@ -7,6 +7,44 @@ import { encryptPrivateKey, decryptPrivateKey, hashApiKey } from "./crypto.js";
 
 const Pool = (pgPkg as any).Pool || (pgPkg as any).default?.Pool || pgPkg;
 
+export interface StoreRecord {
+  id: string;
+  tenant_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  city: string;
+  address: string;
+  province: string;
+  postal_code: string;
+  country: string;
+  tin: string;
+  vat_number: string;
+  currency: string;
+  branch_name: string;
+  contact_person: string;
+  business_type: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TenantOrgDetails {
+  phone?: string;
+  city?: string;
+  address?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
+  tin?: string;
+  vatNumber?: string;
+  currency?: string;
+  branchName?: string;
+  contactPerson?: string;
+  businessType?: string;
+  status?: string;
+}
+
 export interface Tenant {
   id: string;
   name: string;
@@ -15,7 +53,22 @@ export interface Tenant {
   salt: string;
   api_key_hash: string;
   api_key_prefix: string;
+  api_key_encrypted?: string;
+  phone?: string;
+  city?: string;
+  address?: string;
+  province?: string;
+  postal_code?: string;
+  country?: string;
+  tin?: string;
+  vat_number?: string;
+  currency?: string;
+  branch_name?: string;
+  contact_person?: string;
+  business_type?: string;
+  status?: string;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface StoredDevice {
@@ -74,7 +127,44 @@ export async function initDatabase() {
         salt VARCHAR(64) NOT NULL,
         api_key_hash VARCHAR(128) UNIQUE NOT NULL,
         api_key_prefix VARCHAR(32) NOT NULL,
-        created_at TIMESTAMPTZ NOT NULL
+        api_key_encrypted TEXT,
+        phone VARCHAR(64) DEFAULT '',
+        city VARCHAR(128) DEFAULT 'Harare',
+        address TEXT DEFAULT '',
+        province VARCHAR(128) DEFAULT 'Harare',
+        postal_code VARCHAR(32) DEFAULT '00263',
+        country VARCHAR(64) DEFAULT 'Zimbabwe',
+        tin VARCHAR(64) DEFAULT '',
+        vat_number VARCHAR(64) DEFAULT '',
+        currency VARCHAR(8) DEFAULT 'USD',
+        branch_name VARCHAR(128) DEFAULT 'Main Branch',
+        contact_person VARCHAR(128) DEFAULT '',
+        business_type VARCHAR(64) DEFAULT 'Retail',
+        status VARCHAR(32) DEFAULT 'active',
+        created_at TIMESTAMPTZ NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS stores (
+        id VARCHAR(64) PRIMARY KEY,
+        tenant_id VARCHAR(64) NOT NULL REFERENCES tenants(id),
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255),
+        phone VARCHAR(64) DEFAULT '',
+        city VARCHAR(128) DEFAULT 'Harare',
+        address TEXT DEFAULT '',
+        province VARCHAR(128) DEFAULT 'Harare',
+        postal_code VARCHAR(32) DEFAULT '00263',
+        country VARCHAR(64) DEFAULT 'Zimbabwe',
+        tin VARCHAR(64) DEFAULT '',
+        vat_number VARCHAR(64) DEFAULT '',
+        currency VARCHAR(8) DEFAULT 'USD',
+        branch_name VARCHAR(128) DEFAULT 'Main Branch',
+        contact_person VARCHAR(128) DEFAULT '',
+        business_type VARCHAR(64) DEFAULT 'Retail',
+        status VARCHAR(32) DEFAULT 'active',
+        created_at TIMESTAMPTZ NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL
       );
 
       CREATE TABLE IF NOT EXISTS devices (
@@ -160,7 +250,44 @@ export async function initDatabase() {
         api_key_hash TEXT UNIQUE NOT NULL,
         api_key_prefix TEXT NOT NULL,
         api_key_encrypted TEXT,
-        created_at TEXT NOT NULL
+        phone TEXT DEFAULT '',
+        city TEXT DEFAULT 'Harare',
+        address TEXT DEFAULT '',
+        province TEXT DEFAULT 'Harare',
+        postal_code TEXT DEFAULT '00263',
+        country TEXT DEFAULT 'Zimbabwe',
+        tin TEXT DEFAULT '',
+        vat_number TEXT DEFAULT '',
+        currency TEXT DEFAULT 'USD',
+        branch_name TEXT DEFAULT 'Main Branch',
+        contact_person TEXT DEFAULT '',
+        business_type TEXT DEFAULT 'Retail',
+        status TEXT DEFAULT 'active',
+        created_at TEXT NOT NULL,
+        updated_at TEXT
+      );
+
+      CREATE TABLE IF NOT EXISTS stores (
+        id TEXT PRIMARY KEY,
+        tenant_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        email TEXT,
+        phone TEXT DEFAULT '',
+        city TEXT DEFAULT 'Harare',
+        address TEXT DEFAULT '',
+        province TEXT DEFAULT 'Harare',
+        postal_code TEXT DEFAULT '00263',
+        country TEXT DEFAULT 'Zimbabwe',
+        tin TEXT DEFAULT '',
+        vat_number TEXT DEFAULT '',
+        currency TEXT DEFAULT 'USD',
+        branch_name TEXT DEFAULT 'Main Branch',
+        contact_person TEXT DEFAULT '',
+        business_type TEXT DEFAULT 'Retail',
+        status TEXT DEFAULT 'active',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        FOREIGN KEY(tenant_id) REFERENCES tenants(id)
       );
 
       CREATE TABLE IF NOT EXISTS devices (
@@ -242,14 +369,68 @@ export async function initDatabase() {
     `);
   }
 
-  // Column migration for api_key_encrypted
+  // Schema Migrations for tenants table columns (PG & SQLite)
   if (pgPool) {
+    const pgCols = [
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS api_key_encrypted TEXT;",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS phone VARCHAR(64) DEFAULT '';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS city VARCHAR(128) DEFAULT 'Harare';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS address TEXT DEFAULT '';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS province VARCHAR(128) DEFAULT 'Harare';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS postal_code VARCHAR(32) DEFAULT '00263';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS country VARCHAR(64) DEFAULT 'Zimbabwe';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS tin VARCHAR(64) DEFAULT '';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS vat_number VARCHAR(64) DEFAULT '';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS currency VARCHAR(8) DEFAULT 'USD';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS branch_name VARCHAR(128) DEFAULT 'Main Branch';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS contact_person VARCHAR(128) DEFAULT '';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS business_type VARCHAR(64) DEFAULT 'Retail';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS status VARCHAR(32) DEFAULT 'active';",
+      "ALTER TABLE tenants ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();",
+    ];
+    for (const q of pgCols) {
+      try { await pgPool.query(q); } catch {}
+    }
+
+    // Auto-backfill stores table from tenants
     try {
-      await pgPool.query("ALTER TABLE tenants ADD COLUMN IF NOT EXISTS api_key_encrypted TEXT;");
+      await pgPool.query(`
+        INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+        SELECT 'str_' || SUBSTRING(id FROM 5), id, name, email, COALESCE(phone, ''), COALESCE(city, 'Harare'), COALESCE(address, ''), COALESCE(province, 'Harare'), COALESCE(postal_code, '00263'), COALESCE(country, 'Zimbabwe'), COALESCE(tin, ''), COALESCE(vat_number, ''), COALESCE(currency, 'USD'), COALESCE(branch_name, 'Main Branch'), COALESCE(contact_person, ''), COALESCE(business_type, 'Retail'), COALESCE(status, 'active'), created_at, COALESCE(updated_at, created_at)
+        FROM tenants WHERE id NOT IN (SELECT tenant_id FROM stores);
+      `);
     } catch {}
   } else if (sqliteDb) {
+    const sqliteCols = [
+      ["api_key_encrypted", "TEXT"],
+      ["phone", "TEXT DEFAULT ''"],
+      ["city", "TEXT DEFAULT 'Harare'"],
+      ["address", "TEXT DEFAULT ''"],
+      ["province", "TEXT DEFAULT 'Harare'"],
+      ["postal_code", "TEXT DEFAULT '00263'"],
+      ["country", "TEXT DEFAULT 'Zimbabwe'"],
+      ["tin", "TEXT DEFAULT ''"],
+      ["vat_number", "TEXT DEFAULT ''"],
+      ["currency", "TEXT DEFAULT 'USD'"],
+      ["branch_name", "TEXT DEFAULT 'Main Branch'"],
+      ["contact_person", "TEXT DEFAULT ''"],
+      ["business_type", "TEXT DEFAULT 'Retail'"],
+      ["status", "TEXT DEFAULT 'active'"],
+      ["updated_at", "TEXT"],
+    ];
+    for (const [col, colType] of sqliteCols) {
+      try {
+        sqliteDb.exec(`ALTER TABLE tenants ADD COLUMN ${col} ${colType};`);
+      } catch {}
+    }
+
+    // Auto-backfill stores table from tenants
     try {
-      sqliteDb.exec("ALTER TABLE tenants ADD COLUMN api_key_encrypted TEXT;");
+      sqliteDb.exec(`
+        INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+        SELECT 'str_' || substr(id, 5), id, name, email, coalesce(phone, ''), coalesce(city, 'Harare'), coalesce(address, ''), coalesce(province, 'Harare'), coalesce(postal_code, '00263'), coalesce(country, 'Zimbabwe'), coalesce(tin, ''), coalesce(vat_number, ''), coalesce(currency, 'USD'), coalesce(branch_name, 'Main Branch'), coalesce(contact_person, ''), coalesce(business_type, 'Retail'), coalesce(status, 'active'), created_at, coalesce(updated_at, created_at)
+        FROM tenants WHERE id NOT IN (SELECT tenant_id FROM stores);
+      `);
     } catch {}
   }
 }
@@ -266,8 +447,32 @@ export async function registerTenant(
   name: string,
   email: string,
   password: string,
-  explicitApiKey?: string
-): Promise<{ tenant: { id: string; name: string; email: string; api_key_prefix: string; created_at: string }; apiKey: string }> {
+  explicitApiKey?: string,
+  orgDetails?: TenantOrgDetails
+): Promise<{
+  tenant: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    city: string;
+    address: string;
+    province: string;
+    postal_code: string;
+    country: string;
+    tin: string;
+    vat_number: string;
+    currency: string;
+    branch_name: string;
+    contact_person: string;
+    business_type: string;
+    status: string;
+    api_key_prefix: string;
+    created_at: string;
+    updated_at: string;
+  };
+  apiKey: string;
+}> {
   const normEmail = email.toLowerCase().trim();
 
   if (pgPool) {
@@ -286,22 +491,70 @@ export async function registerTenant(
   const api_key_prefix = rawApiKey.slice(0, 12) + "...";
   const api_key_encrypted = encryptPrivateKey(rawApiKey);
   const created_at = new Date().toISOString();
+  const updated_at = created_at;
+
+  const phone = orgDetails?.phone || "";
+  const city = orgDetails?.city || "Harare";
+  const address = orgDetails?.address || "";
+  const province = orgDetails?.province || "Harare";
+  const postal_code = orgDetails?.postalCode || "00263";
+  const country = orgDetails?.country || "Zimbabwe";
+  const tin = orgDetails?.tin || "";
+  const vat_number = orgDetails?.vatNumber || "";
+  const currency = orgDetails?.currency || "USD";
+  const branch_name = orgDetails?.branchName || "Main Branch";
+  const contact_person = orgDetails?.contactPerson || "";
+  const business_type = orgDetails?.businessType || "Retail";
+  const status = orgDetails?.status || "active";
+
+  const storeId = "str_" + crypto.randomBytes(8).toString("hex");
 
   if (pgPool) {
     await pgPool.query(
-      `INSERT INTO tenants (id, name, email, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-      [id, name.trim(), normEmail, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, created_at]
+      `INSERT INTO tenants (id, name, email, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23)`,
+      [id, name.trim(), normEmail, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at]
+    );
+
+    await pgPool.query(
+      `INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+      [storeId, id, name.trim(), normEmail, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at]
     );
   } else if (sqliteDb) {
     sqliteDb.prepare(
-      `INSERT INTO tenants (id, name, email, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).run(id, name.trim(), normEmail, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, created_at);
+      `INSERT INTO tenants (id, name, email, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(id, name.trim(), normEmail, password_hash, salt, api_key_hash, api_key_prefix, api_key_encrypted, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at);
+
+    sqliteDb.prepare(
+      `INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(storeId, id, name.trim(), normEmail, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at);
   }
 
   return {
-    tenant: { id, name: name.trim(), email: normEmail, api_key_prefix, created_at },
+    tenant: {
+      id,
+      name: name.trim(),
+      email: normEmail,
+      phone,
+      city,
+      address,
+      province,
+      postal_code,
+      country,
+      tin,
+      vat_number,
+      currency,
+      branch_name,
+      contact_person,
+      business_type,
+      status,
+      api_key_prefix,
+      created_at,
+      updated_at,
+    },
     apiKey: rawApiKey,
   };
 }
@@ -343,13 +596,191 @@ export async function regenerateApiKey(tenantId: string): Promise<string> {
   return rawApiKey;
 }
 
+// ---------------------------------------------------------------------------
+// Store & Organization Operations
+// ---------------------------------------------------------------------------
+
+export async function listAllStores(tenantId?: string): Promise<StoreRecord[]> {
+  if (pgPool) {
+    const q = tenantId
+      ? "SELECT * FROM stores WHERE tenant_id = $1 ORDER BY created_at ASC"
+      : "SELECT * FROM stores ORDER BY created_at ASC";
+    const res = await pgPool.query(q, tenantId ? [tenantId] : []);
+    return res.rows;
+  } else if (sqliteDb) {
+    const q = tenantId
+      ? "SELECT * FROM stores WHERE tenant_id = ? ORDER BY created_at ASC"
+      : "SELECT * FROM stores ORDER BY created_at ASC";
+    return (sqliteDb.prepare(q).all(...(tenantId ? [tenantId] : [])) as unknown) as StoreRecord[];
+  }
+  return [];
+}
+
+export async function getStoreById(storeOrTenantId: string): Promise<StoreRecord | null> {
+  if (pgPool) {
+    const res = await pgPool.query(
+      "SELECT * FROM stores WHERE id = $1 OR tenant_id = $1 ORDER BY id DESC LIMIT 1",
+      [storeOrTenantId]
+    );
+    return res.rows[0] || null;
+  } else if (sqliteDb) {
+    const row = sqliteDb.prepare(
+      "SELECT * FROM stores WHERE id = ? OR tenant_id = ? ORDER BY id DESC LIMIT 1"
+    ).get(storeOrTenantId, storeOrTenantId);
+    return (row as unknown as StoreRecord) || null;
+  }
+  return null;
+}
+
+export async function createStore(tenantId: string, storeData: Partial<StoreRecord>): Promise<StoreRecord> {
+  const storeId = "str_" + crypto.randomBytes(8).toString("hex");
+  const now = new Date().toISOString();
+  const record: StoreRecord = {
+    id: storeId,
+    tenant_id: tenantId,
+    name: (storeData.name || "Main Store").trim(),
+    email: storeData.email || "",
+    phone: storeData.phone || "",
+    city: storeData.city || "Harare",
+    address: storeData.address || "",
+    province: storeData.province || "Harare",
+    postal_code: storeData.postal_code || "00263",
+    country: storeData.country || "Zimbabwe",
+    tin: storeData.tin || "",
+    vat_number: storeData.vat_number || "",
+    currency: storeData.currency || "USD",
+    branch_name: storeData.branch_name || "Main Branch",
+    contact_person: storeData.contact_person || "",
+    business_type: storeData.business_type || "Retail",
+    status: storeData.status || "active",
+    created_at: now,
+    updated_at: now,
+  };
+
+  if (pgPool) {
+    await pgPool.query(
+      `INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+      [
+        record.id, record.tenant_id, record.name, record.email, record.phone, record.city,
+        record.address, record.province, record.postal_code, record.country, record.tin,
+        record.vat_number, record.currency, record.branch_name, record.contact_person,
+        record.business_type, record.status, record.created_at, record.updated_at
+      ]
+    );
+  } else if (sqliteDb) {
+    sqliteDb.prepare(
+      `INSERT INTO stores (id, tenant_id, name, email, phone, city, address, province, postal_code, country, tin, vat_number, currency, branch_name, contact_person, business_type, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(
+      record.id, record.tenant_id, record.name, record.email, record.phone, record.city,
+      record.address, record.province, record.postal_code, record.country, record.tin,
+      record.vat_number, record.currency, record.branch_name, record.contact_person,
+      record.business_type, record.status, record.created_at, record.updated_at
+    );
+  }
+  return record;
+}
+
+export async function updateStore(storeOrTenantId: string, updates: Partial<StoreRecord>): Promise<StoreRecord | null> {
+  const existing = await getStoreById(storeOrTenantId);
+  if (!existing) return null;
+
+  const now = new Date().toISOString();
+  const merged: StoreRecord = {
+    ...existing,
+    name: updates.name !== undefined ? updates.name.trim() : existing.name,
+    email: updates.email !== undefined ? updates.email.trim() : existing.email,
+    phone: updates.phone !== undefined ? updates.phone.trim() : existing.phone,
+    city: updates.city !== undefined ? updates.city.trim() : existing.city,
+    address: updates.address !== undefined ? updates.address.trim() : existing.address,
+    province: updates.province !== undefined ? updates.province.trim() : existing.province,
+    postal_code: updates.postal_code !== undefined ? updates.postal_code.trim() : existing.postal_code,
+    country: updates.country !== undefined ? updates.country.trim() : existing.country,
+    tin: updates.tin !== undefined ? updates.tin.trim() : existing.tin,
+    vat_number: updates.vat_number !== undefined ? updates.vat_number.trim() : existing.vat_number,
+    currency: updates.currency !== undefined ? updates.currency.trim() : existing.currency,
+    branch_name: updates.branch_name !== undefined ? updates.branch_name.trim() : existing.branch_name,
+    contact_person: updates.contact_person !== undefined ? updates.contact_person.trim() : existing.contact_person,
+    business_type: updates.business_type !== undefined ? updates.business_type.trim() : existing.business_type,
+    status: updates.status !== undefined ? updates.status.trim() : existing.status,
+    updated_at: now,
+  };
+
+  if (pgPool) {
+    await pgPool.query(
+      `UPDATE stores SET name = $1, email = $2, phone = $3, city = $4, address = $5, province = $6, postal_code = $7, country = $8, tin = $9, vat_number = $10, currency = $11, branch_name = $12, contact_person = $13, business_type = $14, status = $15, updated_at = $16 WHERE id = $17`,
+      [
+        merged.name, merged.email, merged.phone, merged.city, merged.address, merged.province,
+        merged.postal_code, merged.country, merged.tin, merged.vat_number, merged.currency,
+        merged.branch_name, merged.contact_person, merged.business_type, merged.status,
+        merged.updated_at, merged.id
+      ]
+    );
+    // Also keep primary tenant row synced if this store is associated with it
+    await pgPool.query(
+      `UPDATE tenants SET name = $1, phone = $2, city = $3, address = $4, province = $5, postal_code = $6, country = $7, tin = $8, vat_number = $9, currency = $10, branch_name = $11, contact_person = $12, business_type = $13, status = $14, updated_at = $15 WHERE id = $16`,
+      [
+        merged.name, merged.phone, merged.city, merged.address, merged.province,
+        merged.postal_code, merged.country, merged.tin, merged.vat_number, merged.currency,
+        merged.branch_name, merged.contact_person, merged.business_type, merged.status,
+        merged.updated_at, merged.tenant_id
+      ]
+    );
+  } else if (sqliteDb) {
+    sqliteDb.prepare(
+      `UPDATE stores SET name = ?, email = ?, phone = ?, city = ?, address = ?, province = ?, postal_code = ?, country = ?, tin = ?, vat_number = ?, currency = ?, branch_name = ?, contact_person = ?, business_type = ?, status = ?, updated_at = ? WHERE id = ?`
+    ).run(
+      merged.name, merged.email, merged.phone, merged.city, merged.address, merged.province,
+      merged.postal_code, merged.country, merged.tin, merged.vat_number, merged.currency,
+      merged.branch_name, merged.contact_person, merged.business_type, merged.status,
+      merged.updated_at, merged.id
+    );
+    // Also keep primary tenant row synced
+    sqliteDb.prepare(
+      `UPDATE tenants SET name = ?, phone = ?, city = ?, address = ?, province = ?, postal_code = ?, country = ?, tin = ?, vat_number = ?, currency = ?, branch_name = ?, contact_person = ?, business_type = ?, status = ?, updated_at = ? WHERE id = ?`
+    ).run(
+      merged.name, merged.phone, merged.city, merged.address, merged.province,
+      merged.postal_code, merged.country, merged.tin, merged.vat_number, merged.currency,
+      merged.branch_name, merged.contact_person, merged.business_type, merged.status,
+      merged.updated_at, merged.tenant_id
+    );
+  }
+  return merged;
+}
+
+export async function deleteStore(storeId: string): Promise<boolean> {
+  if (pgPool) {
+    const res = await pgPool.query("DELETE FROM stores WHERE id = $1", [storeId]);
+    return (res.rowCount || 0) > 0;
+  } else if (sqliteDb) {
+    const res = sqliteDb.prepare("DELETE FROM stores WHERE id = ?").run(storeId);
+    return res.changes > 0;
+  }
+  return false;
+}
+
 export interface TenantSummary {
   id: string;
   name: string;
   email: string;
+  phone?: string;
+  city?: string;
+  address?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
+  tin?: string;
+  vatNumber?: string;
+  currency?: string;
+  branchName?: string;
+  contactPerson?: string;
+  businessType?: string;
+  status?: string;
   apiKey: string;
   apiKeyPrefix: string;
   createdAt: string;
+  updatedAt?: string;
   devices: Array<{
     deviceId: number;
     serialNumber: string;
@@ -359,6 +790,7 @@ export interface TenantSummary {
     certificatePem: string;
     createdAt: string;
   }>;
+  stores?: StoreRecord[];
   receiptCount: number;
   queueCount: number;
 }
@@ -366,6 +798,7 @@ export interface TenantSummary {
 export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
   if (pgPool) {
     const tenantsRes = await pgPool.query("SELECT * FROM tenants ORDER BY created_at ASC");
+    const storesRes = await pgPool.query("SELECT * FROM stores ORDER BY created_at ASC");
     const devicesRes = await pgPool.query("SELECT id, tenant_id, device_id, serial_number, model_name, environment, certificate_pem, is_active, created_at FROM devices");
     const receiptsRes = await pgPool.query("SELECT tenant_id, COUNT(*) as cnt FROM receipts GROUP BY tenant_id");
     const queuesRes = await pgPool.query("SELECT tenant_id, COUNT(*) as cnt FROM queued_receipts WHERE status = 'pending' GROUP BY tenant_id");
@@ -375,6 +808,12 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
 
     const queueMap = new Map<string, number>();
     for (const q of queuesRes.rows) queueMap.set(q.tenant_id, Number(q.cnt));
+
+    const storeMap = new Map<string, StoreRecord[]>();
+    for (const s of storesRes.rows) {
+      if (!storeMap.has(s.tenant_id)) storeMap.set(s.tenant_id, []);
+      storeMap.get(s.tenant_id)!.push(s);
+    }
 
     const deviceMap = new Map<string, any[]>();
     for (const d of devicesRes.rows) {
@@ -401,9 +840,24 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
         id: t.id,
         name: t.name,
         email: t.email,
+        phone: t.phone || "",
+        city: t.city || "Harare",
+        address: t.address || "",
+        province: t.province || "Harare",
+        postalCode: t.postal_code || "00263",
+        country: t.country || "Zimbabwe",
+        tin: t.tin || "",
+        vatNumber: t.vat_number || "",
+        currency: t.currency || "USD",
+        branchName: t.branch_name || "Main Branch",
+        contactPerson: t.contact_person || "",
+        businessType: t.business_type || "Retail",
+        status: t.status || "active",
         apiKey: rawKey,
         apiKeyPrefix: t.api_key_prefix,
         createdAt: t.created_at,
+        updatedAt: t.updated_at || t.created_at,
+        stores: storeMap.get(t.id) || [],
         devices: deviceMap.get(t.id) || [],
         receiptCount: receiptMap.get(t.id) || 0,
         queueCount: queueMap.get(t.id) || 0,
@@ -411,6 +865,7 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
     });
   } else if (sqliteDb) {
     const tenants = sqliteDb.prepare("SELECT * FROM tenants ORDER BY created_at ASC").all() as any[];
+    const stores = sqliteDb.prepare("SELECT * FROM stores ORDER BY created_at ASC").all() as any[];
     const devices = sqliteDb.prepare("SELECT id, tenant_id, device_id, serial_number, model_name, environment, certificate_pem, is_active, created_at FROM devices").all() as any[];
     const receipts = sqliteDb.prepare("SELECT tenant_id, COUNT(*) as cnt FROM receipts GROUP BY tenant_id").all() as any[];
     const queues = sqliteDb.prepare("SELECT tenant_id, COUNT(*) as cnt FROM queued_receipts WHERE status = 'pending' GROUP BY tenant_id").all() as any[];
@@ -420,6 +875,12 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
 
     const queueMap = new Map<string, number>();
     for (const q of queues) queueMap.set(q.tenant_id, Number(q.cnt));
+
+    const storeMap = new Map<string, StoreRecord[]>();
+    for (const s of stores) {
+      if (!storeMap.has(s.tenant_id)) storeMap.set(s.tenant_id, []);
+      storeMap.get(s.tenant_id)!.push(s as StoreRecord);
+    }
 
     const deviceMap = new Map<string, any[]>();
     for (const d of devices) {
@@ -446,9 +907,24 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
         id: t.id,
         name: t.name,
         email: t.email,
+        phone: t.phone || "",
+        city: t.city || "Harare",
+        address: t.address || "",
+        province: t.province || "Harare",
+        postalCode: t.postal_code || "00263",
+        country: t.country || "Zimbabwe",
+        tin: t.tin || "",
+        vatNumber: t.vat_number || "",
+        currency: t.currency || "USD",
+        branchName: t.branch_name || "Main Branch",
+        contactPerson: t.contact_person || "",
+        businessType: t.business_type || "Retail",
+        status: t.status || "active",
         apiKey: rawKey,
         apiKeyPrefix: t.api_key_prefix,
         createdAt: t.created_at,
+        updatedAt: t.updated_at || t.created_at,
+        stores: storeMap.get(t.id) || [],
         devices: deviceMap.get(t.id) || [],
         receiptCount: receiptMap.get(t.id) || 0,
         queueCount: queueMap.get(t.id) || 0,
@@ -460,6 +936,7 @@ export async function listAllTenantsWithDetails(): Promise<TenantSummary[]> {
 
 export async function deleteTenantCascade(tenantId: string): Promise<void> {
   if (pgPool) {
+    await pgPool.query("DELETE FROM stores WHERE tenant_id = $1", [tenantId]);
     await pgPool.query("DELETE FROM day_states WHERE tenant_id = $1", [tenantId]);
     await pgPool.query("DELETE FROM queued_receipts WHERE tenant_id = $1", [tenantId]);
     await pgPool.query("DELETE FROM receipts WHERE tenant_id = $1", [tenantId]);
@@ -467,6 +944,7 @@ export async function deleteTenantCascade(tenantId: string): Promise<void> {
     await pgPool.query("DELETE FROM sessions WHERE tenant_id = $1", [tenantId]);
     await pgPool.query("DELETE FROM tenants WHERE id = $1", [tenantId]);
   } else if (sqliteDb) {
+    sqliteDb.prepare("DELETE FROM stores WHERE tenant_id = ?").run(tenantId);
     sqliteDb.prepare("DELETE FROM day_states WHERE tenant_id = ?").run(tenantId);
     sqliteDb.prepare("DELETE FROM queued_receipts WHERE tenant_id = ?").run(tenantId);
     sqliteDb.prepare("DELETE FROM receipts WHERE tenant_id = ?").run(tenantId);
@@ -893,7 +1371,7 @@ export interface FiscalDayRecord {
   deviceId: number;
   serialNumber: string;
   fiscalDayNo: number;
-  status: 'Open' | 'Closed';
+  status: 'Open' | 'Closed' | 'FailedToClose' | 'Overdue';
   openedAt: string;
   closedAt: string | null;
   receiptsCount: number;
@@ -902,6 +1380,8 @@ export interface FiscalDayRecord {
   operationId?: string | null;
   signature?: string | null;
   isToday: boolean;
+  closeError?: string;
+  isOverdue?: boolean;
 }
 
 export async function recordFiscalDayOpenDb(
@@ -1041,7 +1521,15 @@ export async function listAllFiscalDaysFromDb(targetTenantId?: string): Promise<
       const dayNo = stateObj.fiscalDayNo || 1;
       const key = `${tId}_${dId}_${dayNo}`;
       handledKey.add(key);
-      const isToday = stateObj.fiscalDayDate === new Date().toISOString().slice(0, 10);
+      const openedDate = stateObj.fiscalDayDate || s.updated_at || new Date().toISOString();
+      const isToday = openedDate.slice(0, 10) === new Date().toISOString().slice(0, 10);
+      const openedMs = new Date(openedDate).getTime();
+      const isOverdue = !isNaN(openedMs) && (Date.now() - openedMs > 24 * 3600 * 1000);
+      const hasCloseError = Boolean(stateObj.closeError || stateObj.status === 'FailedToClose');
+      const dayStatus: 'Open' | 'Closed' | 'FailedToClose' | 'Overdue' = hasCloseError
+        ? 'FailedToClose'
+        : (isOverdue ? 'Overdue' : 'Open');
+
       let totalAmount = 0;
       let currency = 'USD';
       if (Array.isArray(stateObj.counters)) {
@@ -1059,13 +1547,15 @@ export async function listAllFiscalDaysFromDb(targetTenantId?: string): Promise<
         deviceId: dId,
         serialNumber: s.serial_number,
         fiscalDayNo: dayNo,
-        status: 'Open',
-        openedAt: stateObj.fiscalDayDate || s.updated_at || new Date().toISOString(),
+        status: dayStatus,
+        openedAt: openedDate,
         closedAt: null,
         receiptsCount: Number(stateObj.receiptCounter || 0),
         totalAmount,
         currency,
-        isToday
+        isToday,
+        isOverdue,
+        closeError: stateObj.closeError || (isOverdue ? 'Fiscal day open > 24 hours without closure (exceeds ZIMRA limit)' : undefined)
       });
     } else {
       const dayNo = 1;
@@ -1118,5 +1608,57 @@ export async function listAllFiscalDaysFromDb(targetTenantId?: string): Promise<
   }
 
   return results;
+}
+
+export async function getReceiptByInvoiceNo(tenantId: string, invoiceNo: string): Promise<StoredReceipt | null> {
+  if (pgPool) {
+    const res = await pgPool.query(
+      "SELECT * FROM receipts WHERE tenant_id = $1 AND invoice_no = $2 ORDER BY id DESC LIMIT 1",
+      [tenantId, invoiceNo]
+    );
+    return res.rows[0] || null;
+  } else if (sqliteDb) {
+    const row = sqliteDb.prepare(
+      "SELECT * FROM receipts WHERE tenant_id = ? AND invoice_no = ? ORDER BY id DESC LIMIT 1"
+    ).get(tenantId, invoiceNo) as StoredReceipt | undefined;
+    return row || null;
+  }
+  return null;
+}
+
+export async function getTenantByDeviceSerial(serialNumber: string): Promise<{ id: string; name: string; email: string; api_key_prefix: string } | null> {
+  const s = serialNumber.trim();
+  if (pgPool) {
+    const res = await pgPool.query(
+      `SELECT t.id, t.name, t.email, t.api_key_prefix FROM devices d
+       JOIN tenants t ON d.tenant_id = t.id
+       WHERE d.serial_number = $1 LIMIT 1`,
+      [s]
+    );
+    return res.rows[0] || null;
+  } else if (sqliteDb) {
+    const row = sqliteDb.prepare(
+      `SELECT t.id, t.name, t.email, t.api_key_prefix FROM devices d
+       JOIN tenants t ON d.tenant_id = t.id
+       WHERE d.serial_number = ? LIMIT 1`
+    ).get(s) as { id: string; name: string; email: string; api_key_prefix: string } | undefined;
+    return row || null;
+  }
+  return null;
+}
+
+export async function getDefaultAdminTenant(): Promise<{ id: string; name: string; email: string; api_key_prefix: string } | null> {
+  if (pgPool) {
+    const res = await pgPool.query(
+      "SELECT id, name, email, api_key_prefix FROM tenants ORDER BY created_at ASC LIMIT 1"
+    );
+    return res.rows[0] || null;
+  } else if (sqliteDb) {
+    const row = sqliteDb.prepare(
+      "SELECT id, name, email, api_key_prefix FROM tenants ORDER BY created_at ASC LIMIT 1"
+    ).get() as { id: string; name: string; email: string; api_key_prefix: string } | undefined;
+    return row || null;
+  }
+  return null;
 }
 
