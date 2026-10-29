@@ -410,8 +410,9 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
 /* Clean White Auth Screen matching User Request */
 .auth{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:#f8fafc}
 .auth-card{width:100%;max-width:390px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.06);overflow:hidden;animation:rise .25s ease-out}
-.auth-top{padding:28px 28px 12px}
-.auth-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.2px;color:var(--text)}
+.auth-top{padding:32px 28px 16px;text-align:center}
+.auth-logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-weight:800;font-size:18px;letter-spacing:-.2px;color:var(--text);text-align:center}
+.auth-logo img{width:52px;height:52px;object-fit:contain;margin:0 auto}
 .auth-logo .module-icon{width:28px;height:28px;border-radius:6px;background:#10b981;display:grid;place-items:center;color:#fff}
 .auth-body{padding:12px 28px 28px}
 .field{margin-bottom:12px}
@@ -450,7 +451,10 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
 <div id="auth-view" class="auth">
   <form class="auth-card" id="auth-form" autocomplete="on">
     <div class="auth-top">
-      <div class="auth-logo"><img src="/public/havano_new_blue.ico" alt="Havano Logo" style="width:30px;height:30px;border-radius:6px;object-fit:contain"> Havano ZIMRA FDMS</div>
+      <div class="auth-logo">
+        <img src="/public/havano_new_blue.png" alt="Havano Logo">
+        <span>Havano ZIMRA FDMS</span>
+      </div>
     </div>
     <div class="auth-body">
       <div id="auth-err" class="err-box hidden"></div>
