@@ -475,7 +475,7 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
 <div id="app-view" class="hidden">
   <header class="topbar">
     <button class="launcher" id="launcher-btn" title="Home" data-go="dashboard" data-icon="grid" data-size="16"></button>
-    <div class="module"><span class="module-icon" id="module-icon"></span><span id="module-name">Havano ZIMRA FDMS</span></div>
+    <div class="module"><span id="module-name">Havano ZIMRA FDMS</span></div>
 
     <nav class="nav">
       <div class="nav-item"><button class="nav-btn" data-nav="dashboard" data-go="dashboard">Dashboard</button></div>
@@ -1069,13 +1069,7 @@ function go(view) {
   closeMenus();
   const m = MODULES[view];
   $('module-name').textContent = m.name;
-  if (m.icon === 'havano' || view === 'dashboard') {
-    $('module-icon').style.background = 'transparent';
-    $('module-icon').innerHTML = '<img src="/public/havano_new_blue.ico" alt="Havano" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff;padding:2px;display:block">';
-  } else {
-    $('module-icon').style.background = m.color;
-    $('module-icon').innerHTML = svg(m.icon, 13);
-  }
+  if ($('module-icon')) $('module-icon').style.display = 'none';
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === m.nav));
   $('ft-view').textContent = m.label;
   document.title = `${m.label} — Havano ZIMRA FDMS`;
