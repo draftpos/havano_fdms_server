@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Havano ZIMRA FDMS — SuperAdmin Gateway</title>
 <meta name="description" content="Multi-tenant ZIMRA fiscal gateway: manage client stores, virtual fiscal devices, fiscal receipts and POS API keys.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -448,7 +450,7 @@ pre.resp{min-height:200px;max-height:330px;margin-top:0;color:#7dd3fc}
 <div id="auth-view" class="auth">
   <form class="auth-card" id="auth-form" autocomplete="on">
     <div class="auth-top">
-      <div class="auth-logo"><span class="module-icon" data-icon="bolt" data-size="14"></span>Havano ZIMRA FDMS</div>
+      <div class="auth-logo"><img src="/public/havano_new_blue.ico" alt="Havano Logo" style="width:30px;height:30px;border-radius:6px;object-fit:contain"> Havano ZIMRA FDMS</div>
     </div>
     <div class="auth-body">
       <div id="auth-err" class="err-box hidden"></div>
@@ -1046,7 +1048,7 @@ async function switchClient(id) {
    Router / chrome
    ===================================================================== */
 const MODULES = {
-  dashboard: { name: 'Havano ZIMRA FDMS', icon: 'bolt', color: '#10b981', nav: 'dashboard', label: 'Fiscal Dashboard' },
+  dashboard: { name: 'Havano ZIMRA FDMS', icon: 'havano', color: '#10b981', nav: 'dashboard', label: 'Fiscal Dashboard' },
   stores: { name: 'Client Stores', icon: 'store', color: '#10b981', nav: 'master', label: 'Client Stores' },
   devices: { name: 'Fiscal Devices', icon: 'cpu', color: '#2563eb', nav: 'master', label: 'Fiscal Devices' },
   days: { name: 'Fiscal Days', icon: 'cal', color: '#0284c7', nav: 'operations', label: 'Fiscal Days' },
@@ -1063,8 +1065,13 @@ function go(view) {
   closeMenus();
   const m = MODULES[view];
   $('module-name').textContent = m.name;
-  $('module-icon').style.background = m.color;
-  $('module-icon').innerHTML = svg(m.icon, 13);
+  if (m.icon === 'havano' || view === 'dashboard') {
+    $('module-icon').style.background = 'transparent';
+    $('module-icon').innerHTML = '<img src="/public/havano_new_blue.ico" alt="Havano" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff;padding:2px;display:block">';
+  } else {
+    $('module-icon').style.background = m.color;
+    $('module-icon').innerHTML = svg(m.icon, 13);
+  }
   document.querySelectorAll('[data-nav]').forEach(b => b.classList.toggle('active', b.dataset.nav === m.nav));
   $('ft-view').textContent = m.label;
   document.title = `${m.label} — Havano ZIMRA FDMS`;

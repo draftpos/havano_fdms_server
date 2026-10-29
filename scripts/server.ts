@@ -387,6 +387,27 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
+  // Static Assets / Favicon
+  if (req.method === "GET" && (url.pathname === "/favicon.ico" || url.pathname.startsWith("/public/") || url.pathname.startsWith("/assets/"))) {
+    const relPath = url.pathname === "/favicon.ico" ? "public/favicon.ico" : url.pathname.replace(/^\/(public|assets)\//, "public/");
+    const filePath = join(process.cwd(), relPath);
+    if (existsSync(filePath)) {
+      const ext = filePath.split(".").pop()?.toLowerCase();
+      const mimeTypes: Record<string, string> = {
+        ico: "image/x-icon",
+        png: "image/png",
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        svg: "image/svg+xml",
+      };
+      res.writeHead(200, {
+        "Content-Type": mimeTypes[ext || ""] || "application/octet-stream",
+        "Cache-Control": "public, max-age=86400",
+      });
+      return res.end(readFileSync(filePath));
+    }
+  }
+
   // Frontend Dashboard
   if (req.method === "GET" && url.pathname === "/") {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
